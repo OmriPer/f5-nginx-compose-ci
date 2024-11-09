@@ -19,16 +19,22 @@ jobs:
       run: docker compose build
 
   test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
     - name: run docker compose
       run: docker compose up -d # run the docker images in the background
+
     - name: wait for test result
       run: |
         while [ ! -f ./result/succeeded ] && [ ! -f ./result/fail ]; do
           echo "waiting for test results..."
           sleep 1
         done
+
     - name: upload test result as artifact
       uses: actions/upload-artifact@v4
       with:
