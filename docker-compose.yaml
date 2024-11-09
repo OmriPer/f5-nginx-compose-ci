@@ -1,4 +1,4 @@
-name: 'nginx test'
+name: 'nginx_test'
 
 services:
   nginx:
