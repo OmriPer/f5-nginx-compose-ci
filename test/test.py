@@ -14,7 +14,7 @@ def test_server(url: str, expected_status: int, expected_content: Optional[str]=
 
         # check the response body if applicable
         if expected_content is not None:
-            if response.text.strip() == expected_content.strip():
+            if response.text.splitlines() == expected_content.splitlines():
                 print(f'server {url} responded with the correct content')
             else:
                 print(f'server {url} responded with the wrong content')
@@ -33,3 +33,5 @@ if __name__ == '__main__':
 
     with open(result_file_name, 'w') as result_file:
         result_file.write('')
+
+    exit(0 if success else 1) # exit code 0 if test passed, 1 if failed
