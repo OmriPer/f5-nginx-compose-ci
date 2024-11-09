@@ -8,12 +8,14 @@ WORKDIR /test_app
 
 # copy the requirements file to the workdir
 COPY requirements.txt .
+# pip install requirements
+RUN pip install -r requirements.txt
 # copy the test script to the workdir
+
 COPY test.py .
 # copy the expected html to check against
 COPY expected.html .
 
-# pip install requirements
-RUN pip install -r requirements.txt
+
 
 CMD ["python", "test.py"]
