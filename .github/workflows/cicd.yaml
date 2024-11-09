@@ -31,7 +31,7 @@ jobs:
         done
 
     - name: upload test result as artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: test-result
         path: |
