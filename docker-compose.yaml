@@ -1,0 +1,30 @@
+name: 'nginx test'
+
+services:
+  nginx:
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "8082:8080"
+      - "8083:8081"
+    networks:
+      - test-network
+  test:
+    build:
+      context: ./test
+      dockerfile: Dockerfile.test
+    networks:
+      - test-network
+    depends_on:
+      - nginx
+    volumes:
+      - result-volume:/result
+
+volumes:
+  # shared volume to pass test result information to the github workflow
+  result-volume:
+
+networks:
+  test-network:
+    driver: bridge # only allow connections between containers and not the host

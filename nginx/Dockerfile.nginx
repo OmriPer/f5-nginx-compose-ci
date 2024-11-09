@@ -1,0 +1,26 @@
+# Dockerfile.nginx
+
+# using Ubuntu 24.04 instead of 'latest' for explicit versioning
+FROM ubuntu:24.04
+
+# install nginx
+# using a single RUN to reduce layer overhead
+RUN apt-get update && \
+    apt-get install nginx -y && \
+    # clean the downloaded .deb files to reduce image size
+    apt-get clean && \
+    # clean the updated apt lists to reduce image size
+    rm -rf /var/lib/apt/lists/* && \
+    # remove nginx default site config to avoid conflicts
+    rm /etc/nginx/sites-enabled/default
+
+
+# copy nginx config & html server files
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY index.html /var/www/html/index.html
+
+# expose ports for both servers (html & error code)
+EXPOSE 8080 8081
+
+# start nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]
