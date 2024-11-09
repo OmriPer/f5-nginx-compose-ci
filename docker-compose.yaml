@@ -19,11 +19,7 @@ services:
     depends_on:
       - nginx
     volumes:
-      - result-volume:/result
-
-volumes:
-  # shared volume to pass test result information to the github workflow
-  result-volume:
+      - ./result:/result # bind the container result dir to the host for github actions check
 
 networks:
   test-network:
