@@ -35,10 +35,19 @@ jobs:
 
     - name: wait for test result
       run: |
-        while [ ! -f ./result/succeeded ] && [ ! -f ./result/fail ]; do
-          echo "waiting for test results..."
+        max_attempts=10
+        for ((i=1; i<=max_attempts; i++)); do
+          if [ -f ./result/succeeded ] || [ -f ./result/fail ]; then
+            echo "Test result found."
+            break
+          fi
+          echo "Waiting for test results... ($i seconds elapsed)"
           sleep 1
         done
+          if [ $i -ge 10 ]; then
+            echo "Timeout reached while waiting for test results."
+            exit 1  # Exit with failure
+          fi
 
     - name: upload test result as artifact
       uses: actions/upload-artifact@v4
